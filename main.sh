@@ -315,21 +315,22 @@ fi
 ### Automatic validation of required option arguments
 ##############################################################################
 
-for __b3bp_tmp_varname in ${!__b3bp_tmp_has_arg_*}; do
-  # validate only options which required an argument
-  [[ "${!__b3bp_tmp_varname}" = "2" ]] || continue
+if [[ "${arg_h:?}" = "0" ]] ; then
+  for __b3bp_tmp_varname in ${!__b3bp_tmp_has_arg_*}; do
+    # validate only options which required an argument
+    [[ "${!__b3bp_tmp_varname}" = "2" ]] || continue
 
-  __b3bp_tmp_opt_short="${__b3bp_tmp_varname##*_}"
-  __b3bp_tmp_varname="arg_${__b3bp_tmp_opt_short}"
-  [[ "${!__b3bp_tmp_varname}" ]] && continue
+    __b3bp_tmp_opt_short="${__b3bp_tmp_varname##*_}"
+    __b3bp_tmp_varname="arg_${__b3bp_tmp_opt_short}"
+    [[ "${!__b3bp_tmp_varname}" ]] && continue
 
-  __b3bp_tmp_varname="__b3bp_tmp_opt_short2long_${__b3bp_tmp_opt_short}"
-  printf -v "__b3bp_tmp_opt_long" '%s' "${!__b3bp_tmp_varname}"
-  [[ "${__b3bp_tmp_opt_long:-}" ]] && __b3bp_tmp_opt_long=" (--${__b3bp_tmp_opt_long//_/-})"
+    __b3bp_tmp_varname="__b3bp_tmp_opt_short2long_${__b3bp_tmp_opt_short}"
+    printf -v "__b3bp_tmp_opt_long" '%s' "${!__b3bp_tmp_varname}"
+    [[ "${__b3bp_tmp_opt_long:-}" ]] && __b3bp_tmp_opt_long=" (--${__b3bp_tmp_opt_long//_/-})"
 
-  help "Option -${__b3bp_tmp_opt_short}${__b3bp_tmp_opt_long:-} requires an argument"
-done
-
+    help "Option -${__b3bp_tmp_opt_short}${__b3bp_tmp_opt_long:-} requires an argument"
+  done
+fi
 
 ### Cleanup Environment variables
 ##############################################################################
